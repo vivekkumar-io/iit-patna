@@ -1,0 +1,30 @@
+Oeeggis Corporation - IT Security Policy
+
+1. Password Requirements
+Passwords must be at least 12 characters with uppercase, lowercase, numbers, and symbols.
+Passwords must be changed every 90 days.
+Multi-factor authentication (MFA) is mandatory for all systems.
+
+2. Device Usage
+Company-issued laptops must have approved antivirus software installed.
+Personal devices may not access internal systems without IT approval.
+
+3. Data Classification
+Confidential data must not be shared via personal email or unapproved cloud services.
+All customer data is classified as confidential.
+
+4. Software Installation
+Only software from the approved catalog may be installed on company devices.
+Requests for new software go through the IT service desk.
+
+5. Incident Reporting
+Security incidents must be reported to security@oeeggis.com within 1 hour of discovery.
+Do not attempt to investigate security breaches independently.
+
+6. Remote Access
+VPN is required when accessing company resources from outside the office network.
+VPN credentials are personal and must not be shared.
+
+7. Email and Phishing
+Employees must complete annual security awareness training.
+Suspected phishing emails should be reported using the "Report Phishing" button.

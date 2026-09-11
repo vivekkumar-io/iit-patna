@@ -1,0 +1,27 @@
+.env
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+data/vector_store/
+data/bm25_index/
+logs/
+log/
+*.log
+*.pkl
+.DS_Store
+
+# Temp / work artifacts (kept in D:\_GenAIProject\BKp)
+SubmissionDocument/video_frames/
+SubmissionDocument/video_frames_full/
+SubmissionDocument/narration_segments/
+SubmissionDocument/narration_config.json
+SubmissionDocument/narration_prompt.txt
+SubmissionDocument/demo_narration*.mp3
+SubmissionDocument/*Copy.pptx
+# Demo video — share via Google Drive link, not GitHub
+SubmissionDocument/*.mp4
+SubmissionDocument/architecture_diagram.html
+SubmissionDocument/screenshots/architecture_flow_diagram.png
+SubmissionDocument/DEMO_SCRIPT.md
