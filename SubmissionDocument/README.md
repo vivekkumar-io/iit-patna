@@ -117,7 +117,6 @@ Enterprise_Knowledge_Assistant/
 ├── data/
 │   └── documents/              # Sample company documents
 ├── SubmissionDocument/         # Submission package documents
-├── ArchitectureDocument/       # Manual commands reference
 ├── requirements.txt
 ├── setup.bat                   # First-time setup (Windows)
 ├── start.bat                   # Clean + launch app (Windows)
@@ -179,7 +178,8 @@ Copy `.env.example` to `.env` and configure:
 | `RERANKER_MODEL` | No | `cross-encoder/ms-marco-MiniLM-L-6-v2` | Reranker |
 | `CHUNK_SIZE` | No | `600` | Characters per chunk |
 | `CHUNK_OVERLAP` | No | `120` | Chunk overlap |
-| `RETRIEVAL_TOP_K` | No | `15` | Candidates before rerank |
+| `RETRIEVAL_TOP_K` | No | `8` | Candidates per search (vector + BM25) |
+| `RERANK_CANDIDATE_MAX` | No | `12` | Max merged chunks sent to reranker |
 | `RERANK_TOP_N` | No | `5` | Chunks sent to LLM |
 | `MEMORY_WINDOW` | No | `5` | Conversation turns remembered |
 
@@ -277,11 +277,21 @@ Log files are created in `logs/` with step-by-step flow, retrieval details, LLM 
 
 Evaluator documents are collected in **`SubmissionDocument/`**:
 
-- Submission index and checklist
-- Architecture notes
-- Demo script
-- GitHub submission guide
-- Copies of `.env.example` and `SAMPLE_OUTPUT.md`
+- Submission index (`INDEX.md`)
+- Architecture notes (`ARCHITECTURE.md` / `.docx`)
+- Environment setup (`ENVIRONMENT_SETUP.md` / `.docx`)
+- Sample outputs (`SAMPLE_OUTPUT.md` / `.docx`)
+- PowerPoint: `Enterprise_Knowledge_Assistant_Vivek_kumar.pptx`
+- Application screenshot and architecture diagram
+
+### Demo Video
+
+**File:** `Demo_Enterprise_Knowledge_Assistant_video_with._Vivek_Kumar.mp4`  
+**Google Drive:** _Add your link here_
+
+> The demo video is not included in the GitHub repository due to file size. Upload to Google Drive and share the link in your submission.
+
+**GitHub repo:** https://github.com/vivekkumar-io/iit-patna
 
 ---
 

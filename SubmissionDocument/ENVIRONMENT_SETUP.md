@@ -49,7 +49,8 @@ Optional overrides:
 | `RERANKER_MODEL` | `cross-encoder/ms-marco-MiniLM-L-6-v2` |
 | `CHUNK_SIZE` | `600` |
 | `CHUNK_OVERLAP` | `120` |
-| `RETRIEVAL_TOP_K` | `15` |
+| `RETRIEVAL_TOP_K` | `8` |
+| `RERANK_CANDIDATE_MAX` | `12` |
 | `RERANK_TOP_N` | `5` |
 | `MEMORY_WINDOW` | `5` |
 
