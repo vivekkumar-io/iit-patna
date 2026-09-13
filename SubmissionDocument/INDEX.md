@@ -14,10 +14,8 @@ This folder contains all documents required for project submission and evaluatio
 |------|---------|
 | [INDEX.md](INDEX.md) | This index — start here |
 | [README.md](README.md) | Full project README (copy for evaluators) |
-| [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) | Pre-submit verification checklist |
 | [SAMPLE_OUTPUT.md](SAMPLE_OUTPUT.md) | Example questions and expected outputs |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Architecture diagram and component flow |
-| [MENTOR_DEMO_PREP.md](MENTOR_DEMO_PREP.md) | Mentor demo guide — architecture, code deep dive, Q&A |
 | [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md) | Environment variables and setup steps |
 | [GITHUB_SUBMISSION_GUIDE.md](GITHUB_SUBMISSION_GUIDE.md) | GitHub repo requirements |
 | [.env.example](.env.example) | Example environment file (no secrets) |
@@ -42,7 +40,6 @@ This folder contains all documents required for project submission and evaluatio
 |------|---------|
 | `../README.md` | Main project README |
 | `../SAMPLE_OUTPUT.md` | Sample outputs (copy) |
-| `../SUBMISSION_CHECKLIST.md` | Submission checklist (copy) |
 | `../requirements.txt` | Python dependencies |
 | `../setup.bat` | First-time setup (Windows) |
 | `../start.bat` | Clean + start app (Windows) |

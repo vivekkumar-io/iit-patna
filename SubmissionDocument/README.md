@@ -123,7 +123,6 @@ Enterprise_Knowledge_Assistant/
 ├── start.bat                   # Clean + launch app (Windows)
 ├── .env.example
 ├── SAMPLE_OUTPUT.md
-├── SUBMISSION_CHECKLIST.md
 └── README.md
 ```
 
