@@ -241,7 +241,7 @@ def build_presentation() -> Path:
         prs,
         "Enterprise Knowledge Assistant",
         "Project 2 — Advanced RAG Application\n"
-        "Vivek Kumar | IIT Patna USDC GenAI Development Program\n"
+        "Vivek Kumar | IIT Patna GenAI Development Program\n"
         "Oeeggis Corporation (Fictional — Academic Project)",
     )
 

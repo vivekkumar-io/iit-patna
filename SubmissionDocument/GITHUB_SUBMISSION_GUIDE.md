@@ -77,4 +77,4 @@ git push -u origin main
 
 ## Repository description (suggested)
 
-> Enterprise Knowledge Assistant — Advanced RAG app with hybrid search, BM25, reranking, conversational memory, and Streamlit UI. IIT Patna USDC GenAI Development Program — Final Evaluation (Project 2). Author: Vivek Kumar.
+> Enterprise Knowledge Assistant — Advanced RAG app with hybrid search, BM25, reranking, conversational memory, and Streamlit UI. IIT Patna GenAI Development Program — Final Evaluation (Project 2). Author: Vivek Kumar.

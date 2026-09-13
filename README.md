@@ -1,7 +1,7 @@
 # Enterprise Knowledge Assistant
 
 **Author:** Vivek Kumar  
-**Program:** IIT Patna USDC — GenAI Development Program (Final Evaluation)  
+**Program:** IIT Patna — GenAI Development Program (Final Evaluation)  
 **Project:** Project 2 — Enterprise Knowledge Assistant with Advanced RAG
 
 A production-oriented RAG application that lets employees ask questions about company policies using hybrid retrieval, reranking, conversational memory, and source-grounded answers.
@@ -299,5 +299,5 @@ Evaluator documents are collected in **`SubmissionDocument/`**:
 ## Author
 
 **Vivek Kumar**  
-IIT Patna USDC — GenAI Development Program — Final Evaluation  
+IIT Patna — GenAI Development Program — Final Evaluation  
 Project 2: Enterprise Knowledge Assistant with Advanced RAG

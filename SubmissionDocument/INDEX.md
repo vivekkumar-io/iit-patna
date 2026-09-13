@@ -2,7 +2,7 @@
 
 **Author:** Vivek Kumar  
 **Project:** Project 2 — Enterprise Knowledge Assistant with Advanced RAG  
-**Program:** IIT Patna USDC — GenAI Development Program (Final Evaluation)
+**Program:** IIT Patna — GenAI Development Program (Final Evaluation)
 
 This folder contains all documents required for project submission and evaluation.
 
@@ -17,6 +17,7 @@ This folder contains all documents required for project submission and evaluatio
 | [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) | Pre-submit verification checklist |
 | [SAMPLE_OUTPUT.md](SAMPLE_OUTPUT.md) | Example questions and expected outputs |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Architecture diagram and component flow |
+| [MENTOR_DEMO_PREP.md](MENTOR_DEMO_PREP.md) | Mentor demo guide — architecture, code deep dive, Q&A |
 | [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md) | Environment variables and setup steps |
 | [GITHUB_SUBMISSION_GUIDE.md](GITHUB_SUBMISSION_GUIDE.md) | GitHub repo requirements |
 | [.env.example](.env.example) | Example environment file (no secrets) |
