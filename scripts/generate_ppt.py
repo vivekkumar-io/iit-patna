@@ -20,13 +20,74 @@ SCREENSHOT_PATH = (
     PROJECT_ROOT / "SubmissionDocument" / "screenshots" / "app_home_screen.png"
 )
 ARCHITECTURE_DIAGRAM_PATH = (
-    Path(r"D:\_GenAIProject\BKp\Enterprise_Knowledge_Assistant_temp") / "architecture_flow_diagram.png"
+    PROJECT_ROOT
+    / "SubmissionDocument"
+    / "screenshots"
+    / "architecture_flow_diagram.png"
+)
+ARCHITECTURE_DIAGRAM_FALLBACK = (
+    Path(r"D:\_GenAIProject\BKp\Enterprise_Knowledge_Assistant_temp")
+    / "screenshots"
+    / "architecture_flow_diagram.png"
 )
 
 DARK_BLUE = RGBColor(0x15, 0x65, 0xC0)
 WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 DARK_TEXT = RGBColor(0x1F, 0x29, 0x37)
 GRAY = RGBColor(0x64, 0x74, 0x8B)
+
+ASCII_ARCHITECTURE_DIAGRAM = """Documents (PDF/TXT/DOCX)
+        |
+        v
++-------------------+
+|  Document Loader  |  ingestion/loader.py
++---------+---------+
+          v
++-------------------+
+|     Chunker       |  ingestion/chunker.py
++---------+---------+
+          v
++-------------------+
+|   Embeddings      |  ingestion/embedder.py
++---------+---------+
+          +----------------------+
+          v                      v
++-------------------+    +-------------------+
+|  ChromaDB Vector  |    |    BM25 Index     |
+|      Store        |    |                   |
++---------+---------+    +---------+---------+
+          |                        |
+          +------------+-----------+
+                       v
+            +-----------------------+
+            |   Hybrid Retriever    |  retrieval/hybrid_retriever.py
+            |   (Vector + BM25)     |
+            +-----------+-----------+
+                        v
+            +-----------------------+
+            |      Reranker         |  retrieval/reranker.py
+            +-----------+-----------+
+                        v
+            +-----------------------+
+            |   Context Builder     |  generation/guard.py
+            +-----------+-----------+
+                        v
+            +-----------------------+
+            |  LLM + Chat Memory    |  generation/chain.py
+            +-----------+-----------+
+                        v
+            +-----------------------+
+            |   Streamlit Chat UI   |  app/ui/chat.py
+            |  Answer + Sources     |
+            +-----------------------+"""
+
+
+def resolve_architecture_diagram_path() -> Path:
+    if ARCHITECTURE_DIAGRAM_PATH.exists():
+        return ARCHITECTURE_DIAGRAM_PATH
+    if ARCHITECTURE_DIAGRAM_FALLBACK.exists():
+        return ARCHITECTURE_DIAGRAM_FALLBACK
+    return ARCHITECTURE_DIAGRAM_PATH
 
 
 def set_title_style(shape, size=32, color=DARK_BLUE, bold=True):
@@ -151,6 +212,26 @@ def add_text_slide(prs, title, body_text):
         paragraph.space_after = Pt(10)
 
 
+def add_ascii_diagram_slide(prs, title, diagram_text):
+    """Monospace slide for the high-level ASCII architecture from ARCHITECTURE.md."""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+
+    title_box = slide.shapes.add_textbox(Inches(0.5), Inches(0.15), Inches(9), Inches(0.5))
+    title_box.text_frame.text = title
+    set_title_style(title_box, size=26)
+
+    body_box = slide.shapes.add_textbox(Inches(0.25), Inches(0.65), Inches(9.5), Inches(6.7))
+    body_frame = body_box.text_frame
+    body_frame.word_wrap = False
+    body_frame.text = diagram_text
+    for paragraph in body_frame.paragraphs:
+        paragraph.font.name = "Courier New"
+        paragraph.font.size = Pt(7.5)
+        paragraph.font.color.rgb = DARK_TEXT
+        paragraph.space_after = Pt(0)
+        paragraph.line_spacing = 1.0
+
+
 def build_presentation() -> Path:
     prs = Presentation()
     prs.slide_width = Inches(10)
@@ -190,8 +271,14 @@ def build_presentation() -> Path:
     add_image_slide(
         prs,
         "Architecture Flow Diagram",
-        ARCHITECTURE_DIAGRAM_PATH,
+        resolve_architecture_diagram_path(),
         "A: Indexing Pipeline (offline)  |  B: Query Pipeline (online)",
+    )
+
+    add_ascii_diagram_slide(
+        prs,
+        "High-Level Architecture (ASCII)",
+        ASCII_ARCHITECTURE_DIAGRAM,
     )
 
     add_content_slide(
@@ -199,11 +286,11 @@ def build_presentation() -> Path:
         "Architecture Summary",
         [
             "Indexing: Documents → Loader → Chunker → Embeddings → ChromaDB + BM25.",
-            "Query: User input → route message → hybrid search → rerank → LLM.",
-            "Memory rewrite handles follow-up questions using chat history.",
-            "Instant reply path for greetings and casual introductions.",
-            "Hallucination guard returns not-found when data is missing.",
-            "Streamlit UI shows answer, sources, history, and reset option.",
+            "Query: User input → route → memory rewrite → hybrid search → rerank → context builder → LLM.",
+            "Routing: greetings (UI); casual intros and memory questions get instant replies without retrieval.",
+            "Policy questions run the full RAG pipeline and return answers with source citations.",
+            "Hallucination guard returns a safe not-found message when no relevant chunks are found.",
+            "Streamlit UI shows chat history, sources, Knowledge Scope filter, and Clear/Reset.",
         ],
     )
 
