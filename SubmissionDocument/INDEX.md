@@ -14,9 +14,9 @@ This folder contains all documents required for project submission and evaluatio
 |------|---------|
 | [INDEX.md](INDEX.md) | This index — start here |
 | [README.md](README.md) | Full project README (copy for evaluators) |
-| [SAMPLE_OUTPUT.md](SAMPLE_OUTPUT.md) | Example questions and expected outputs |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Architecture diagram and component flow |
-| [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md) | Environment variables and setup steps |
+| [SAMPLE_OUTPUT.md](SAMPLE_OUTPUT.md) / [.docx](SAMPLE_OUTPUT.docx) | Example questions and expected outputs |
+| [ARCHITECTURE.md](ARCHITECTURE.md) / [.docx](ARCHITECTURE.docx) | Architecture diagram and component flow |
+| [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md) / [.docx](ENVIRONMENT_SETUP.docx) | Environment variables and setup steps |
 | [GITHUB_SUBMISSION_GUIDE.md](GITHUB_SUBMISSION_GUIDE.md) | GitHub repo requirements |
 | [.env.example](.env.example) | Example environment file (no secrets) |
 | [Enterprise_Knowledge_Assistant_Vivek_kumar.pptx](Enterprise_Knowledge_Assistant_Vivek_kumar.pptx) | Submission PowerPoint |
