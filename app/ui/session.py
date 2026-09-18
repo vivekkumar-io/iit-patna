@@ -18,13 +18,24 @@ WELCOME_MESSAGE = (
 )
 
 RESET_MESSAGE = (
-    "Chat reset successfully. Ask me any question about the company documents."
+    "Conversation cleared. Ask me about policies, benefits, travel, IT, or HR FAQs."
 )
 
 
 def get_selected_documents() -> list[str]:
     """Return list of selected document file names from session state."""
     return st.session_state.get("selected_documents", [])
+
+
+def init_session_state(show_welcome_page: bool) -> None:
+    """Initialize UI session flags."""
+    if "conversation_started" not in st.session_state:
+        st.session_state.conversation_started = not show_welcome_page
+
+
+def should_show_welcome(show_welcome_page: bool) -> bool:
+    """True when the landing page should appear instead of chat."""
+    return show_welcome_page and not st.session_state.get("conversation_started", False)
 
 
 def init_chat_history() -> None:

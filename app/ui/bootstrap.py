@@ -6,19 +6,20 @@ Author: Vivek Kumar
 
 import streamlit as st
 
-from generation.chain import RAGChain
-from retrieval.retriever import KnowledgeRetriever
-
 
 @st.cache_resource(show_spinner=False)
-def get_shared_retriever() -> KnowledgeRetriever:
+def get_shared_retriever():
     """Load ChromaDB, BM25, and reranker once per Streamlit server process."""
+    from retrieval.retriever import KnowledgeRetriever
+
     return KnowledgeRetriever()
 
 
-def get_rag_chain() -> RAGChain:
+def get_rag_chain():
     """Return the session RAG chain, wired to the shared retriever."""
     if st.session_state.get("rag_chain") is None:
+        from generation.chain import RAGChain
+
         chain = RAGChain()
         chain.attach_shared_retriever(get_shared_retriever())
         st.session_state.rag_chain = chain

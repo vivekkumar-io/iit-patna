@@ -85,6 +85,19 @@ MEMORY_QUESTION_PHRASES = (
     "what was my",
 )
 
+FOLLOW_UP_PHRASES = (
+    "what about",
+    "how about",
+    "and what",
+    "also ",
+    "tell me more",
+    "same for",
+    "that one",
+    "those ",
+    " about it",
+    " about that",
+)
+
 QUESTION_PHRASES = (
     "what is",
     "what are",
@@ -125,6 +138,15 @@ def should_search_documents(user_message: str) -> bool:
         return True
 
     return False
+
+
+def _needs_question_rewrite(user_message: str) -> bool:
+    """Return True only when chat history rewrite is likely needed."""
+    normalized = user_message.strip().lower()
+    if any(phrase in normalized for phrase in FOLLOW_UP_PHRASES):
+        return True
+    # Short vague questions are often follow-ups after prior context.
+    return len(normalized.split()) <= 4
 
 
 def _extract_intro_facts(text: str) -> dict[str, str]:
@@ -268,7 +290,12 @@ class RAGChain:
             log_function_end(logger, "rewrite_follow_up_question()", user_question)
             return user_question
 
-        log_step(logger, "Chat history found. Rewriting follow-up question.")
+        if not _needs_question_rewrite(user_question):
+            log_step(logger, "Standalone question detected. Skipping rewrite.")
+            log_function_end(logger, "rewrite_follow_up_question()", user_question)
+            return user_question
+
+        log_step(logger, "Follow-up detected. Rewriting question with chat history.")
         log_data(logger, "Chat History", self.chat_memory.format_messages())
 
         messages_before = len(self.chat_memory.messages)

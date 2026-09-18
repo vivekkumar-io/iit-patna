@@ -8,9 +8,7 @@ import time
 
 import streamlit as st
 
-from app.ui.bootstrap import get_rag_chain
 from app.ui.session import get_selected_documents
-from generation.chain import build_instant_conversational_reply, should_search_documents
 
 GREETING_REPLY = (
     "Hello! I am your Enterprise Knowledge Assistant for Oeeggis Corporation "
@@ -18,19 +16,12 @@ GREETING_REPLY = (
     "Ask me any question about company policies, benefits, travel, IT, or FAQs."
 )
 
-MIN_REPLY_SECONDS = 2.0
+MIN_REPLY_SECONDS = 0.0
 
 
 def show_sources(sources: list[str]) -> None:
-    """Display retrieved document sources under an assistant answer."""
-    if not sources:
-        return
-
-    items = "".join(f"<li>{source}</li>" for source in sources)
-    st.markdown(
-        f'<div class="source-citations"><strong>Sources:</strong><ul>{items}</ul></div>',
-        unsafe_allow_html=True,
-    )
+    """Source citations are collected internally but not shown in the UI."""
+    return
 
 
 def show_thinking_indicator() -> None:
@@ -72,6 +63,9 @@ def _is_greeting(text: str) -> bool:
 
 
 def _get_answer(question: str) -> dict:
+    from app.ui.bootstrap import get_rag_chain
+    from generation.chain import build_instant_conversational_reply, should_search_documents
+
     if _is_greeting(question):
         rag_chain = get_rag_chain()
         rag_chain.chat_memory.add_turn(question, GREETING_REPLY)
@@ -98,6 +92,8 @@ def _get_answer(question: str) -> dict:
 
 def _process_pending_question(question: str) -> dict:
     """Brief thinking pause for policy questions; intros reply faster."""
+    from generation.chain import should_search_documents
+
     if should_search_documents(question):
         time.sleep(MIN_REPLY_SECONDS)
 

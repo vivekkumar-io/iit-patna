@@ -10,13 +10,13 @@ from app.config import settings
 from app.ui.session import ACADEMIC_DISCLAIMER, reset_chat_history
 
 TOPIC_LABELS = {
-    "Benefits_Documentation": "Benefits",
-    "Code_of_Conduct": "Code_of_Conduct",
-    "Company_FAQs": "Company_FAQs",
-    "HR_Handbook": "HR_Handbook",
-    "IT_Policy": "IT_Policy",
-    "Leave_Policy": "Leave_Policy",
-    "Travel_Policy": "Travel_Policy",
+    "Benefits_Documentation": "Benefits & Perks",
+    "Code_of_Conduct": "Code of Conduct",
+    "Company_FAQs": "Company FAQs",
+    "HR_Handbook": "HR Handbook",
+    "IT_Policy": "IT & Security Policy",
+    "Leave_Policy": "Leave Policy",
+    "Travel_Policy": "Travel Policy",
 }
 
 
@@ -27,7 +27,9 @@ def is_index_ready() -> bool:
 
 
 def _topic_label(filename_stem: str) -> str:
-    return TOPIC_LABELS.get(filename_stem, filename_stem)
+    if filename_stem in TOPIC_LABELS:
+        return TOPIC_LABELS[filename_stem]
+    return filename_stem.replace("_", " ").strip()
 
 
 def _list_documents() -> list[tuple[str, str]]:
@@ -51,7 +53,8 @@ def render_sidebar() -> None:
     st.session_state.selected_documents = all_filenames
 
     with st.sidebar:
-        st.markdown("## Knowledge Scope")
+        st.markdown("## Knowledge Base")
+        st.caption("Company policies and employee guides")
         st.markdown("---")
 
         if documents:

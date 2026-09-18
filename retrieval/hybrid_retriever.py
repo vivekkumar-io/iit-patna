@@ -8,6 +8,7 @@ from pathlib import Path
 
 from langchain_core.documents import Document
 
+from app.config import settings
 from retrieval.reranker import Reranker
 from util.logger import get_logger, log_function_end, log_function_start, log_step
 
@@ -94,6 +95,14 @@ class HybridRetriever:
         log_step(logger, "Sub-step 3: Combine both result lists")
         combined_results = combine_search_results(vector_results, keyword_results)
         combined_results = _filter_by_sources(combined_results, selected_documents)
+
+        if len(combined_results) > settings.rerank_candidate_max:
+            log_step(
+                logger,
+                f"Capping rerank candidates from {len(combined_results)} "
+                f"to {settings.rerank_candidate_max}",
+            )
+            combined_results = combined_results[: settings.rerank_candidate_max]
 
         log_step(logger, "Sub-step 4: Rerank and keep best chunks")
         best_chunks = self.reranker.rerank(user_question, combined_results)

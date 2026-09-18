@@ -41,8 +41,9 @@ Casual introductions (name, city) are handled locally without document search. P
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                         STREAMLIT UI (app/)                              │
-│   Chat history │ Source citations │ Clear/Reset │ Knowledge scope        │
+│   Chat history │ Clear/Reset │ Knowledge scope                           │
 └───────────────────────────────────┬─────────────────────────────────────┘
+                                    │ (all layers below also log to logs/)
                                     │ user question
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -65,6 +66,11 @@ Casual introductions (name, city) are handled locally without document search. P
                                     │
                                     ▼
                           data/documents/  (sample policies)
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│              SESSION LOGGER (util/logger.py) — cross-cutting             │
+│   Steps, retrieval chunks, LLM prompts/responses, errors → logs/         │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Query flow
@@ -77,7 +83,8 @@ User Question
     → Reranking
     → Build context prompt
     → LLM answer
-    → Sources displayed in UI
+    → UI displays answer
+    → util/logger.py writes session trace to logs/
 ```
 
 ---
@@ -113,13 +120,15 @@ Enterprise_Knowledge_Assistant/
 ├── generation/                 # RAG chain, prompts, memory, guard
 ├── util/                       # Logging helpers
 ├── scripts/
-│   └── ingest.py               # CLI ingestion
+│   ├── ingest.py               # CLI ingestion
+│   └── check_index.py          # Verify indexes exist
 ├── data/
 │   └── documents/              # Sample company documents
 ├── SubmissionDocument/         # Submission package documents
 ├── requirements.txt
-├── setup.bat                   # First-time setup (Windows)
-├── start.bat                   # Clean + launch app (Windows)
+├── setup.bat                   # First-time setup + one-time indexing (Windows)
+├── start.bat                   # Fast daily launch (Windows)
+├── reindex.bat                 # Rebuild indexes after document changes
 ├── .env.example
 ├── SAMPLE_OUTPUT.md
 └── README.md
@@ -137,20 +146,13 @@ Enterprise_Knowledge_Assistant/
 
 ### Option A — Windows batch scripts (recommended)
 
-1. **First time only:** double-click `setup.bat`
-2. Copy environment file:
+1. Copy environment file and add your API key:
    ```bat
    copy .env.example .env
    ```
-3. Edit `.env` and add your OpenAI API key
-4. Index documents:
-   ```bat
-   python scripts\ingest.py
-   ```
-5. Launch app:
-   ```bat
-   start.bat
-   ```
+2. **First time only:** double-click `setup.bat` (installs packages + builds indexes once)
+3. **Daily use:** double-click `start.bat` (fast startup — no re-indexing)
+4. **After adding documents:** run `reindex.bat`
 
 ### Option B — Manual setup
 
@@ -189,13 +191,12 @@ Copy `.env.example` to `.env` and configure:
 
 ## How to Run the Application
 
-1. Activate virtual environment
-2. Ensure documents are indexed: `python scripts/ingest.py`
-3. Start app: `start.bat` or `streamlit run app/main.py`
-4. Open browser: **http://localhost:8501**
-5. Wait for startup preload to finish, then ask questions
+1. Run `setup.bat` once (or `python scripts/ingest.py` manually)
+2. Start app: `start.bat` or `streamlit run app/main.py`
+3. Open browser: **http://localhost:8501**
+4. Wait for startup preload to finish, then ask questions
 
-Re-run ingestion after adding or editing files in `data/documents/`.
+After adding or editing files in `data/documents/`, run `reindex.bat`.
 
 ---
 

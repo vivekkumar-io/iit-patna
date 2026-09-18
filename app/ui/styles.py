@@ -4,7 +4,14 @@ Stable chat UI styles + wireframe header/sidebar.
 Author: Vivek Kumar
 """
 
+import base64
+from functools import lru_cache
+from pathlib import Path
+
 import streamlit as st
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+WELCOME_THEME_IMAGE = PROJECT_ROOT / "Image" / "image_bc91fdd9.jpg"
 
 DARK_BLUE = "#1565C0"
 LIGHT_SKY_BLUE = "#D6F0FF"
@@ -15,6 +22,38 @@ STAR_PATTERN = """
     radial-gradient(1px 1px at 80px 120px, rgba(255,255,255,0.9), transparent),
     radial-gradient(1.5px 1.5px at 140px 60px, #fff, transparent)
 """
+
+
+@lru_cache(maxsize=1)
+def _welcome_theme_background_data_url() -> str | None:
+    """Load welcome theme image once as a CSS data URL."""
+    if not WELCOME_THEME_IMAGE.is_file():
+        return None
+
+    encoded = base64.b64encode(WELCOME_THEME_IMAGE.read_bytes()).decode("ascii")
+    return f"data:image/jpeg;base64,{encoded}"
+
+
+def _welcome_page_background_css() -> str:
+    """Background for welcome page: theme image with overlay, or stars fallback."""
+    image_url = _welcome_theme_background_data_url()
+    if image_url:
+        return f"""
+                background-color: {DARK_BLUE} !important;
+                background-image:
+                    linear-gradient(rgba(13, 71, 161, 0.68), rgba(13, 71, 161, 0.82)),
+                    url("{image_url}") !important;
+                background-size: cover !important;
+                background-position: center center !important;
+                background-repeat: no-repeat !important;
+                background-attachment: fixed !important;
+        """
+
+    return f"""
+                background-color: {DARK_BLUE} !important;
+                background-image: {STAR_PATTERN} !important;
+                background-size: 220px 220px !important;
+    """
 
 
 def apply_wireframe_styles() -> None:
@@ -190,7 +229,16 @@ def apply_wireframe_styles() -> None:
                 40% {{ transform: scale(1); opacity: 1; }}
             }}
 
-            #MainMenu, footer {{ visibility: hidden; }}
+            #MainMenu, footer, [data-testid="stToolbar"],
+            [data-testid="stDecoration"], [data-testid="stStatusWidget"] {{
+                visibility: hidden;
+            }}
+
+            header[data-testid="stHeader"] {{
+                background: transparent !important;
+                height: 0 !important;
+                min-height: 0 !important;
+            }}
 
             .app-disclaimer-footer {{
                 position: fixed;
@@ -205,6 +253,226 @@ def apply_wireframe_styles() -> None:
                 color: #546E7A;
                 text-align: center;
                 line-height: 1.35;
+            }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def apply_welcome_layout_styles() -> None:
+    """Hide sidebar and style the welcome landing page."""
+    st.markdown(
+        f"""
+        <style>
+            section[data-testid="stSidebar"],
+            [data-testid="collapsedControl"] {{
+                display: none !important;
+            }}
+
+            .stApp,
+            [data-testid="stAppViewContainer"],
+            [data-testid="stAppViewContainer"] > .main {{
+                {_welcome_page_background_css()}
+            }}
+
+            [data-testid="stAppViewContainer"] > .main .block-container {{
+                max-width: 820px !important;
+                background-color: transparent !important;
+                padding-bottom: 7rem !important;
+            }}
+
+            .app-disclaimer-footer {{
+                background: rgba(13, 71, 161, 0.92) !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.25) !important;
+                color: rgba(255, 255, 255, 0.88) !important;
+            }}
+
+            .welcome-page {{
+                margin-top: 0.5rem;
+            }}
+
+            .welcome-hero {{
+                text-align: center;
+                margin-bottom: 1.25rem;
+            }}
+
+            .welcome-badge,
+            .welcome-title,
+            .welcome-subtitle {{
+                text-align: center;
+            }}
+
+            .welcome-loading {{
+                margin: 0.75rem 0 0.5rem 0;
+                color: #FFFFFF !important;
+                font-size: 0.92rem;
+                font-weight: 600;
+                text-align: center;
+                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+            }}
+
+            .welcome-h {{
+                margin: 1.1rem 0 0.45rem 0;
+                color: #FFFFFF !important;
+                font-size: 1.1rem;
+                font-weight: 700;
+                text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+            }}
+
+            .welcome-body {{
+                margin: 0;
+                color: #B3E5FC !important;
+                line-height: 1.65;
+                font-size: 0.98rem;
+                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+            }}
+
+            .welcome-bullet {{
+                margin: 0.2rem 0 0 0;
+                padding-left: 0.35rem;
+            }}
+
+            .welcome-h-builtby {{
+                margin-bottom: 1.25rem !important;
+            }}
+
+            .welcome-name {{
+                margin: 0.5rem 0 0 0;
+                color: #FFFFFF !important;
+                font-size: 1rem;
+                font-weight: 700;
+                text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+            }}
+
+            .welcome-note {{
+                margin: 0.5rem 0 1rem 0;
+                color: #81D4FA !important;
+                font-size: 0.92rem;
+                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+            }}
+
+            .welcome-badge {{
+                display: inline-block;
+                margin: 0 0 1rem 0;
+                padding: 0.35rem 0.75rem;
+                background: rgba(255, 255, 255, 0.15);
+                color: #FFFFFF;
+                border: 1px solid rgba(255, 255, 255, 0.35);
+                border-radius: 999px;
+                font-size: 0.82rem;
+                font-weight: 600;
+            }}
+
+            .welcome-title {{
+                margin: 0 0 0.35rem 0;
+                color: #FFFFFF;
+                font-size: 2rem;
+                font-weight: 700;
+                line-height: 1.2;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            }}
+
+            .welcome-subtitle {{
+                margin: 0;
+                color: rgba(255, 255, 255, 0.92);
+                font-size: 1.05rem;
+            }}
+
+            .welcome-section {{
+                margin-bottom: 1.35rem;
+            }}
+
+            .welcome-section:last-child {{
+                margin-bottom: 0;
+            }}
+
+            .welcome-section-title {{
+                margin: 0 0 0.5rem 0;
+                color: {DARK_BLUE};
+                font-size: 1.05rem;
+                font-weight: 700;
+            }}
+
+            .welcome-section p {{
+                margin: 0;
+                color: #37474F;
+                line-height: 1.6;
+                font-size: 0.98rem;
+            }}
+
+            .welcome-benefits {{
+                margin: 0;
+                padding-left: 1.25rem;
+                color: #37474F;
+                line-height: 1.7;
+                font-size: 0.98rem;
+            }}
+
+            .welcome-author p {{
+                margin: 0.15rem 0 0 0;
+            }}
+
+            .welcome-author-note {{
+                margin-top: 0.5rem !important;
+                color: #607D8B !important;
+                font-size: 0.92rem !important;
+            }}
+
+            section.main [data-testid="stButton"],
+            section[data-testid="stMain"] [data-testid="stButton"],
+            section.main div.stButton,
+            section[data-testid="stMain"] div.stButton {{
+                margin-top: 0.75rem !important;
+                margin-bottom: 2rem !important;
+            }}
+
+            section.main [data-testid="stButton"] button,
+            section[data-testid="stMain"] [data-testid="stButton"] button,
+            section.main div.stButton > button,
+            section[data-testid="stMain"] div.stButton > button,
+            section.main button[data-testid="stBaseButton-primary"],
+            section[data-testid="stMain"] button[data-testid="stBaseButton-primary"] {{
+                background-color: #FFFFFF !important;
+                color: {BUTTON_TEXT} !important;
+                -webkit-text-fill-color: {BUTTON_TEXT} !important;
+                font-weight: 700 !important;
+                font-size: 1rem !important;
+                border: 2px solid #FFFFFF !important;
+                border-radius: 10px !important;
+                padding: 0.8rem 1rem !important;
+                min-height: 3.1rem !important;
+                width: 100% !important;
+                box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35) !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }}
+
+            section.main [data-testid="stButton"] button:disabled,
+            section[data-testid="stMain"] [data-testid="stButton"] button:disabled {{
+                background-color: #ECEFF1 !important;
+                color: #546E7A !important;
+                -webkit-text-fill-color: #546E7A !important;
+                border-color: #CFD8DC !important;
+            }}
+
+            section.main [data-testid="stButton"] button:hover,
+            section.main div.stButton > button:hover {{
+                background-color: #E3F2FD !important;
+            }}
+
+            section.main [data-testid="stButton"] button p,
+            section.main [data-testid="stButton"] button span,
+            section.main [data-testid="stButton"] button div,
+            section.main div.stButton > button p,
+            section.main div.stButton > button span,
+            section.main div.stButton > button div {{
+                color: {BUTTON_TEXT} !important;
+                -webkit-text-fill-color: {BUTTON_TEXT} !important;
+            }}
+
+            [data-testid="stAppViewContainer"] .main [data-testid="stCaptionContainer"] p {{
+                color: #B3E5FC !important;
             }}
         </style>
         """,

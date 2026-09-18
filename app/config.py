@@ -52,9 +52,14 @@ class Settings(BaseSettings):
     chunk_overlap: int = 120  # Overlap helps keep context between chunks
 
     # --- Retrieval settings ---
-    retrieval_top_k: int = 15  # How many chunks to fetch before reranking
+    retrieval_top_k: int = 8  # How many chunks to fetch per search (vector + BM25)
     rerank_top_n: int = 5  # How many best chunks to send to the LLM
+    rerank_candidate_max: int = 12  # Max merged chunks passed to cross-encoder
     memory_window: int = 5  # How many past chat turns to remember
+
+    # --- UI settings ---
+    # Set SHOW_WELCOME_PAGE=false in .env to open chat directly (skip landing page)
+    show_welcome_page: bool = True
 
 
 # Create one settings object used across the whole app

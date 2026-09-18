@@ -32,8 +32,11 @@ def main() -> None:
         print("SUCCESS!")
         print(f"Documents loaded: {result['document_count']}")
         print(f"Chunks created:   {result['chunk_count']}")
-        print("\nNext step:")
-        print("streamlit run app/main.py")
+
+        from scripts.check_index import mark_index_ready
+
+        mark_index_ready()
+        print("\nIndexes saved. You can now run start.bat.")
     else:
         log_step(logger, f"Ingestion failed: {result['message']}")
         print("FAILED!")
