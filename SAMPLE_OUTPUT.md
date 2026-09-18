@@ -113,6 +113,7 @@ This document shows example questions and expected assistant behaviour for evalu
 
 | Feature | Expected behaviour |
 |---------|-------------------|
+| Welcome page | Project overview shown first; **Start Conversation** opens chat |
 | Chat history | Previous messages remain visible |
 | Source citations | Shown below policy answers |
 | Clear / Reset | Clears chat and memory |
@@ -125,6 +126,7 @@ This document shows example questions and expected assistant behaviour for evalu
 
 1. Run `python scripts/ingest.py` before first use.
 2. Use `start.bat` or `streamlit run app/main.py`.
-3. Open `http://localhost:8501`.
+3. Open `http://localhost:8501` (local deployment only).
+4. Click **Start Conversation** on the welcome page before testing chat.
 4. Sample documents are in `data/documents/`.
 5. Detailed logs are written to `logs/` during each session.

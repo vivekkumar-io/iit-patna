@@ -48,7 +48,8 @@ Documents (PDF/TXT/DOCX)
           └──────────┬────────────┘
                      ▼
           ┌───────────────────────┐
-          │   Streamlit Chat UI   │  app/ui/chat.py
+          │   Streamlit UI        │  app/main.py
+          │  Welcome → Chat       │  app/ui/welcome.py, app/ui/chat.py
           │  Answer + Sources     │
           └──────────┬────────────┘
                      │
@@ -67,10 +68,13 @@ Documents (PDF/TXT/DOCX)
 
 | Module | Responsibility |
 |--------|----------------|
-| `app/main.py` | Streamlit entry point |
+| `app/main.py` | Streamlit entry point; welcome vs chat routing |
 | `app/config.py` | Central configuration |
+| `app/ui/welcome.py` | Landing page with project overview and Start Conversation |
 | `app/ui/bootstrap.py` | Startup preload of models |
 | `app/ui/chat.py` | Chat UI, citations, routing |
+| `app/ui/sidebar.py` | Knowledge scope sidebar and Clear/Reset |
+| `app/ui/session.py` | Session state and conversation history |
 | `ingestion/pipeline.py` | End-to-end indexing |
 | `retrieval/retriever.py` | Retrieval facade |
 | `generation/chain.py` | RAG orchestration |
@@ -79,6 +83,11 @@ Documents (PDF/TXT/DOCX)
 | `util/logger.py` | File logging |
 
 ---
+
+## User flow
+
+1. **Welcome page** — Project overview; user clicks **Start Conversation**
+2. **Chat UI** — Sidebar shows knowledge scope; user asks questions in the chat input
 
 ## Query routing logic
 
@@ -92,7 +101,8 @@ Documents (PDF/TXT/DOCX)
 ## Data flow for policy questions
 
 ```
-User Query
+Welcome page → Start Conversation
+  → User query
   → should_search_documents()
   → rewrite_follow_up_question() using memory
   → hybrid retrieve (top-k)

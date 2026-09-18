@@ -7,8 +7,11 @@
 ## Step 1 — Clone or extract project
 
 ```bat
-cd D:\_GenAIProject\Enterprise_Knowledge_Assistant
+git clone https://github.com/vivekkumar-io/iit-patna.git
+cd iit-patna
 ```
+
+Or open the extracted project folder in your terminal.
 
 ---
 
@@ -53,6 +56,13 @@ Optional overrides:
 | `RERANK_CANDIDATE_MAX` | `12` |
 | `RERANK_TOP_N` | `5` |
 | `MEMORY_WINDOW` | `5` |
+| `SHOW_WELCOME_PAGE` | `true` |
+
+---
+
+## Deployment note
+
+This project runs **locally** on your machine. There is no cloud-hosted public URL. After startup, open **http://localhost:8501** in your browser.
 
 ---
 
@@ -79,6 +89,13 @@ streamlit run app/main.py
 ```
 
 URL: **http://localhost:8501**
+
+On first launch:
+1. Review the **welcome page**
+2. Click **Start Conversation**
+3. Ask policy questions in the chat input
+
+To rebuild indexes after document changes, run `reindex.bat`.
 
 ---
 

@@ -28,8 +28,7 @@ This folder contains all documents required for project submission and evaluatio
 
 > The demo video is **not** uploaded to GitHub (file size). Share the Google Drive link in your submission form and/or add it to `README.md`.
 
-**Temp/work files** (video frames, narration segments, architecture HTML/PNG, draft PPTs, `DEMO_SCRIPT.md`, `MANUAL_COMMANDS.txt`) are stored at:
-`D:\_GenAIProject\BKp\Enterprise_Knowledge_Assistant_temp`
+**Temp/work files** (demo video build assets, draft frames, narration files) are kept locally outside this repository and are not required for evaluation.
 
 ---
 
@@ -58,7 +57,9 @@ python scripts\ingest.py
 start.bat
 ```
 
-Open: **http://localhost:8501**
+Open: **http://localhost:8501** (local deployment — no cloud URL)
+
+On the welcome page, click **Start Conversation**, then run the sample questions from `SAMPLE_OUTPUT.md`.
 
 ---
 

@@ -32,7 +32,7 @@ The application implements a full RAG pipeline:
 5. Send top chunks + conversation history to the LLM
 6. Return an answer with **source citations** in the Streamlit UI
 
-Casual introductions (name, city) are handled locally without document search. Policy questions trigger retrieval and grounded generation.
+The app opens on a **welcome page** (project overview and **Start Conversation**). Casual introductions (name, city) are handled locally without document search. Policy questions trigger retrieval and grounded generation.
 
 ---
 
@@ -41,7 +41,7 @@ Casual introductions (name, city) are handled locally without document search. P
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                         STREAMLIT UI (app/)                              │
-│   Chat history │ Clear/Reset │ Knowledge scope                           │
+│   Welcome page │ Chat history │ Clear/Reset │ Knowledge scope            │
 └───────────────────────────────────┬─────────────────────────────────────┘
                                     │ (all layers below also log to logs/)
                                     │ user question
@@ -76,7 +76,8 @@ Casual introductions (name, city) are handled locally without document search. P
 ### Query flow
 
 ```
-User Question
+Welcome page → Start Conversation
+    → User question
     → Route (policy question vs casual intro)
     → Rewrite follow-up using chat memory
     → Hybrid retrieval (vector + BM25)
@@ -114,14 +115,17 @@ Enterprise_Knowledge_Assistant/
 ├── app/                        # Streamlit application
 │   ├── main.py                 # Entry point
 │   ├── config.py               # Settings
-│   └── ui/                     # Chat, sidebar, styles, bootstrap
+│   └── ui/                     # Welcome, chat, sidebar, styles, bootstrap
+├── Image/                      # Welcome page theme image
 ├── ingestion/                  # Document loading, chunking, indexing
 ├── retrieval/                  # Vector store, BM25, hybrid, reranker
 ├── generation/                 # RAG chain, prompts, memory, guard
 ├── util/                       # Logging helpers
 ├── scripts/
 │   ├── ingest.py               # CLI ingestion
-│   └── check_index.py          # Verify indexes exist
+│   ├── check_index.py          # Verify indexes exist
+│   ├── check_api_key.py        # Validate OpenAI key before startup
+│   └── warmup.py               # Optional model warmup helper
 ├── data/
 │   └── documents/              # Sample company documents
 ├── SubmissionDocument/         # Submission package documents
@@ -194,7 +198,9 @@ Copy `.env.example` to `.env` and configure:
 1. Run `setup.bat` once (or `python scripts/ingest.py` manually)
 2. Start app: `start.bat` or `streamlit run app/main.py`
 3. Open browser: **http://localhost:8501**
-4. Wait for startup preload to finish, then ask questions
+4. Review the welcome page, click **Start Conversation**, then ask questions
+
+> **Deployment:** This project runs **locally** only. There is no cloud-hosted public URL. Evaluators run the app on their machine using the steps above.
 
 After adding or editing files in `data/documents/`, run `reindex.bat`.
 
@@ -263,6 +269,7 @@ Brief example:
 | Reranking | `retrieval/reranker.py` |
 | Conversational memory | `generation/memory.py`, `generation/chain.py` |
 | Source citations | `generation/guard.py`, `app/ui/chat.py` |
+| Welcome page | `app/ui/welcome.py`, `app/main.py` |
 | Streamlit UI | `app/main.py`, `app/ui/` |
 | Hallucination handling | `generation/prompt.py`, `generation/chain.py` |
 
